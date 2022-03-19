@@ -3,7 +3,7 @@ const path = require("path"); // eslint-disable-line @typescript-eslint/no-var-r
 module.exports = {
     entry: {
         popup: path.join(__dirname, "src/popup/index.tsx"),
-        eventPage: path.join(__dirname, "src/background.ts")
+        background: path.join(__dirname, "src/background.ts")
     },
     output: {
         path: path.join(__dirname, "dist/js"),
