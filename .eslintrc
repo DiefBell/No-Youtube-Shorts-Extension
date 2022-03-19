@@ -10,8 +10,8 @@
     ],
     "extends":
     [
-      "airbnb-base",
-      "airbnb-typescript/base",
+      "airbnb",
+      "airbnb-typescript",
       "plugin:@typescript-eslint/eslint-recommended",
       "plugin:@typescript-eslint/recommended"
     ],
@@ -24,7 +24,7 @@
       // base rule needs to be off for the TS rule to work
       "brace-style": "off",
       // Dief's personal preference
-      "@typescript-eslint/brace-style": [ "error", "stroustrup", { "allowSingleLine": true } ],
+      "@typescript-eslint/brace-style": [ "error", "allman", { "allowSingleLine": true } ],
     
       // base rule needs to be off for the TS rule to work
       "semi": "off",
@@ -49,10 +49,15 @@
             "TSTypeParameterInstantiation" // ignore types in generic function declarations
           ]
         } ],
+        "react/jsx-indent": [ "error", 4 ],
+        "react/jsx-indent-props": [ "error", 4 ],
 
       // not really sure why this is a default rule for AirBnB
       // so gonna do a bitta research
-      "import/prefer-default-export": "off"
+      "import/prefer-default-export": "off",
+
+      "react/function-component-definition": [ "error", { "namedComponents": "function-declaration",  "unnamedComponents": "arrow-function"  }],
+      "array-bracket-spacing": [ "error", "always" ]
     },
     "settings": {
       "import/parsers": {
