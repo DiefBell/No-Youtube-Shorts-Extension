@@ -3,11 +3,24 @@
     "name": "No YouTube Shorts",
     "description": "Hides YouTube Shorts and redirects you to the home page if you open a shorts video",
     "version": "1.0.0",
+    "icons": {
+        "16": "/icon/no-yt-shorts-16.png",
+        "32": "/icon/no-yt-shorts-32.png",
+        "48": "/icon/no-yt-shorts-48.png",
+        "128": "/icon/no-yt-shorts-128.png"
+    },
     "background": {
-        "service_worker": "js/eventPage.js"
+        "service_worker": "/js/eventPage.js"
     },
     "permissions": [],
     "action": {
-        "default_popup": "popup.html"
+        "default_title": "YT No Shorts",
+        "default_popup": "/popup.html",
+        "default_icon": {
+            "16": "/icon/no-yt-shorts-16.png",
+            "32": "/icon/no-yt-shorts-32.png",
+            "48": "/icon/no-yt-shorts-48.png",
+            "128": "/icon/no-yt-shorts-128.png"
+        }
     }
 }
