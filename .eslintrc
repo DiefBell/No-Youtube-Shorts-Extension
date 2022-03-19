@@ -1,0 +1,73 @@
+{
+    "root": true,
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "plugins":
+    [
+      "@typescript-eslint"
+    ],
+    "extends":
+    [
+      "airbnb-base",
+      "airbnb-typescript/base",
+      "plugin:@typescript-eslint/eslint-recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": [ "*.css" ],
+    "rules":
+    {
+      // I like to be able to use if occassionally for lazy debugging
+      "no-console": "warn",
+
+      // base rule needs to be off for the TS rule to work
+      "brace-style": "off",
+      // Dief's personal preference
+      "@typescript-eslint/brace-style": [ "error", "stroustrup", { "allowSingleLine": true } ],
+    
+      // base rule needs to be off for the TS rule to work
+      "semi": "off",
+      "@typescript-eslint/semi": [ "error" ],
+
+      // Dief's personal preference
+      "@typescript-eslint/type-annotation-spacing": [
+        "error",
+        {
+          "before": false,
+          "after": true
+        }
+      ],
+
+        "quotes": "off",
+        "@typescript-eslint/quotes": [ "error", "double" ],
+
+        "no-tabs": "off",
+        "indent": "off",
+        "@typescript-eslint/indent": [ "error", 4, {
+          "ignoredNodes": [
+            "TSTypeParameterInstantiation" // ignore types in generic function declarations
+          ]
+        } ],
+
+      // not really sure why this is a default rule for AirBnB
+      // so gonna do a bitta research
+      "import/prefer-default-export": "off"
+    },
+    "settings": {
+      "import/parsers": {
+        // this makes sure that import/extensions doesn't get confused
+        "@typescript-eslint/parser": [".ts", ".tsx"]
+      },
+      "import/resolver": {
+        // this makes sure that ESLint's path resolver is able
+        // to find the baseUrl and paths set in our tsconfig file
+        "typescript": {
+          // always try to resolve types under `<root>@types` directory
+          // even it doesn't contain any source code, like `@types/unist`
+          "alwaysTryTypes": true,
+          "project": "./tsconfig.json"
+        }
+      }
+  }
+}
