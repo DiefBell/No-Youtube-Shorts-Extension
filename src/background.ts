@@ -6,7 +6,7 @@ const popupMountedHandler = (
 ) =>
 {
     // onMessage must return "true" if response is async.
-    const isResponseAsync = false;
+    const isResponseAsync = true;
 
     if (request.popupMounted)
     {
