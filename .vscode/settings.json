@@ -13,8 +13,8 @@
         "source.fixAll.eslint": true
     },
     "eslint.validate": [ "javascript", "typescript", "typescriptreact" ],
-    "[typescriptreact]": {
+    "[*]": {
         "editor.tabSize": 4,
-        "editor.insertSpaces": true
+        "editor.insertSpaces": false
     }
 }

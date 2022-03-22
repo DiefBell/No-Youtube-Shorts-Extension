@@ -1,30 +1,35 @@
 import { useEffect, useState } from "react";
+import { getChromeSyncValues } from "../helpers/getChromeSyncValues";
+import { setChromeSyncValues } from "../helpers/setChromeSyncValues";
+import { INysSettings } from "../types/INysSettings";
 
-export const useChromeState = <T>(
-    name : string,
-    defaultValue : T
-) : [ T, (newState : T) => void ] =>
+type SettingType<T extends keyof INysSettings> = INysSettings[T];
+
+export const useChromeState = <T extends keyof INysSettings>(
+	name : T,
+	defaultValue : SettingType<T>
+) : [ SettingType<T>, (newState : SettingType<T>) => Promise<void> ] =>
 {
-    const [ state, setState ] = useState<T>(defaultValue);
+	const [ state, setState ] = useState<SettingType<T>>(defaultValue);
 
 
-    const syncToChromeStorageOnMount = () =>
-    {
-        chrome.storage.sync.get([ name ], ([ value ] : [T]) =>
-        {
-            if(value) setState(value);
-            else chrome.storage.sync.set({ [name]: defaultValue });
-        });
-    };
-    useEffect(syncToChromeStorageOnMount, []);
+	const syncToChromeStorageOnMount = () =>
+	{
+		getChromeSyncValues([ name ]).then(async ({ [name]: value }) =>
+		{
+			if(value) setState(value as SettingType<T>);
+			else await setChromeSyncValues({ [name]: defaultValue });
+		});
+	};
+	useEffect(syncToChromeStorageOnMount, []);
 
 
-    const setStateWithChromeSync = (newState : T) =>
-    {
-        chrome.storage.sync.set({ [name]: newState });
-        setState(newState);
-    };
+	const setStateWithChromeSync = async (newState : SettingType<T>) =>
+	{
+		await setChromeSyncValues({ [name]: newState });
+		setState(newState);
+	};
 
 
-    return [ state, setStateWithChromeSync ];
+	return [ state, setStateWithChromeSync ];
 };
