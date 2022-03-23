@@ -1,5 +1,5 @@
 import { INysSettings } from "../types/INysSettings";
-import { storagePrefix } from "../types/storagePrefix";
+import { storagePrefix } from "../constants/storagePrefix";
 
 export const getChromeSyncValues = async (keys : (keyof INysSettings)[]) : Promise<Partial<INysSettings>> =>
 {
