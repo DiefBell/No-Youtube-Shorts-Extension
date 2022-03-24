@@ -1,31 +1,33 @@
 import { youtubeDomains } from "./constants/youtubeDomains";
 import { youtubePageSettings } from "./constants/youtubePages";
-import { getChromeSyncValues } from "./helpers/getChromeSyncValues";
+import { getChromeValues } from "./helpers/getChromeValues";
 import { deleteNavigationButton } from "./scripts/deleteNavigationButton";
 import { deleteThumbnails } from "./scripts/deleteThumbnails";
+import { MessagePayload } from "./types/MessagePayload";
 
 
-
-// Listen to messages sent from other parts of the extension.
-const popupMountedHandler = (
-	request : any,
+const messageHandler = (
+	request : MessagePayload,
 	sender : chrome.runtime.MessageSender,
-	sendResponse : (response ?: any) => void,
-) =>
+	sendResponse : (response ?: any) => void
+) : boolean =>
 {
-	// onMessage must return "true" if response is async.
-	const isResponseAsync = true;
+	const isResponseAsync = false;
 
-	if (request.popupMounted)
+	switch(request.type)
 	{
-		console.log("background worker notified that Popup.tsx has mounted.");
+	case "LOG":
+		if(request.args) console.log(`No Youtube Shorts: ${request.msg}`, request.args); // eslint-disable-line no-console
+		else console.log(`No YouTube Shorts: ${request.msg}`); // eslint-disable-line no-console
+		break;
+	default:
+		break;
 	}
 
+	sendResponse();
 	return isResponseAsync;
 };
-
-chrome.runtime.onMessage.addListener(popupMountedHandler);
-
+chrome.runtime.onMessage.addListener(messageHandler);
 
 
 const tabChangeHandler = async (
@@ -50,7 +52,7 @@ const tabChangeHandler = async (
 		redirectFromShorts,
 		redirectPage,
 		disableUntil,
-	} = await getChromeSyncValues([
+	} = await getChromeValues([
 		"hideNavigation",
 		"hideThumbnails",
 		"redirectFromShorts",

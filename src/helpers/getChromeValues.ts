@@ -1,7 +1,7 @@
 import { INysSettings } from "../types/INysSettings";
 import { storagePrefix } from "../constants/storagePrefix";
 
-export const getChromeSyncValues = async (keys : (keyof INysSettings)[]) : Promise<Partial<INysSettings>> =>
+export const getChromeValues = async (keys : (keyof INysSettings)[]) : Promise<Partial<INysSettings>> =>
 {
 	// prefix all values in storage with "nys:"
 	const keysPrefixed = keys.map((key) => `${storagePrefix}:${key}`);
