@@ -37,6 +37,8 @@ export default function Popup()
 							handleBackgroundColor="#D9D9D9"
 							barBackgroundColorActive="#FF1616"
 							barBackgroundColor="#000000"
+							barWidth={49}
+							barHeight={23}
 							onToggle={(state) => setHideNavigation(state)}
 						/>
 					</div>
@@ -46,6 +48,8 @@ export default function Popup()
 							handleBackgroundColor="#D9D9D9"
 							barBackgroundColorActive="#FF1616"
 							barBackgroundColor="#000000"
+							barWidth={49}
+							barHeight={23}
 							onToggle={(state) => setHideThumbnails(state)}
 						/>
 					</div>
@@ -55,6 +59,8 @@ export default function Popup()
 							handleBackgroundColor="#D9D9D9"
 							barBackgroundColorActive="#FF1616"
 							barBackgroundColor="#000000"
+							barWidth={49}
+							barHeight={23}
 							onToggle={(state) => setRedirectFromShorts(state)}
 						/>
 					</div>
