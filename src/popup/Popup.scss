@@ -1,22 +1,22 @@
 $primary-color: black;
-$background-color: #c0ffc8;
+$background-color: #FFFFFF;
 
 // Chrome applies an 8px margin by default (gross).
 body {
     margin: 0px;
+    padding: 0;
 }
 
 .popupContainer {
-    padding: 5px;
     align-items: center;
     background-color: $background-color;
     border: none;
     border-radius: 2px;
     color: $primary-color;
     font-size: 20px;
-    height: 120px;
+    height: 135px;
     justify-content: space-evenly;
-    width: 230px;
+    width: 240px;
 }
 .popupContainer h3{
     margin: 0;
@@ -44,5 +44,16 @@ body {
     padding: 4px 5px;
     margin: 0;
     height:50px;
-    font-weight: 300;
+    font-weight: 400;
+}
+
+.hr-divider{
+    margin-block-start: 2px;
+    margin-block-end: 2px;
+    width: 100%;
+    background-color: #FF1616;
+    height: 2px;
+}
+.grey-div{
+    background-color: #C7D0D8;
 }
