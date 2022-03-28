@@ -67,6 +67,7 @@ export default function Popup()
 					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 					style={{ backgroundColor: hideNavigation ? "red" : "blue" }} // swap for className
 					onClick={async () => { await setHideNavigation(!hideNavigation); }}
+					disabled={disabledUntil !== null}
 				>
 					{ hideNavigation ? "show navigation" : "hide navigation" }
 				</button>
@@ -76,6 +77,7 @@ export default function Popup()
 					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 					style={{ backgroundColor: hideThumbnails ? "red" : "blue" }} // swap for className
 					onClick={async () => { await setHideThumbnails(!hideThumbnails); }}
+					disabled={disabledUntil !== null}
 				>
 					{ hideThumbnails ? "show thumbnails" : "hide thumbnails" }
 				</button>
@@ -85,12 +87,13 @@ export default function Popup()
 					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 					style={{ backgroundColor: redirectFromShorts ? "red" : "blue" }} // swap for className
 					onClick={async () => { await setRedirectFromShorts(!redirectFromShorts); }}
+					disabled={disabledUntil !== null}
 				>
 					{ redirectFromShorts ? "don't redirect from shorts" : "redirect from shorts" }
 				</button>
 
 				<select
-					disabled={!redirectFromShorts}
+					disabled={!redirectFromShorts || disabledUntil !== null}
 					name="redirectPage"
 					onChange={(option) => { setRedirectPage(option.target.value as YoutubePage); }}
 					value={redirectPage}
