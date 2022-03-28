@@ -6,5 +6,5 @@ export interface INysSettings
 	hideThumbnails : boolean;
 	redirectFromShorts : boolean;
 	redirectPage : YoutubePage,
-	disableUntil : Date | null,
+	disabledUntil : Date | null,
 }

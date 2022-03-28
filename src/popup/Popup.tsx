@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { YoutubePages } from "../constants/YoutubePages";
-import { youtubePageSettings } from "../constants/youtubePageSettings";
 import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
 import { YoutubePage } from "../types/YoutubePage";
@@ -12,12 +11,52 @@ export default function Popup()
 	const [ hideThumbnails, setHideThumbnails ] = useChromeState("hideThumbnails", true);
 	const [ redirectFromShorts, setRedirectFromShorts ] = useChromeState("redirectFromShorts", true);
 	const [ redirectPage, setRedirectPage ] = useChromeState("redirectPage", "home");
+	const [ disabledUntil, setDisabledUntil ] = useChromeState("disabledUntil", null, {
+		set: (value) => (value !== null ? value.toJSON() : null),
+		get: (value) => (value !== null ? new Date(value) : null)
+	});
 
-	const broadcastPopupMounted = () => log("Popup opened");
-	useEffect(broadcastPopupMounted, []);
+	const [ disabledUntilText, setDisabledUntilText ] = useState("");
 
-	const test = () => log("hideNavigation changed to: ", hideNavigation.toString());
-	useEffect(test, [ hideNavigation ]);
+	const deleteAll = () =>
+	{
+		chrome.storage.sync.remove([
+			"nys:disableUntil",
+			"nys:hideNavigation",
+			"nys:hideThumbnails",
+			"nys:redirectFromShorts",
+			"nyt:disableUntil"
+		]);
+	};
+	// uncomment to delete from Chrome sync storage
+	// useEffect(deleteAll, []);
+
+	const updateDisabledUntilTextOnChange = () =>
+	{
+		if(disabledUntil !== null)
+		{
+			const today = new Date();
+			if(today.getDate() === disabledUntil.getDate())
+			{
+				setDisabledUntilText(`Disabled until today at ${disabledUntil.toLocaleTimeString()}`);
+			}
+			else
+			{
+				setDisabledUntilText(`Disabled until tomorrow at ${disabledUntil.toLocaleTimeString()}`);
+			}
+		}
+	};
+	useEffect(updateDisabledUntilTextOnChange, [ disabledUntil ]);
+
+	const checkIfDisabledTimeExpired = () =>
+	{
+		log("Disabled until: ", disabledUntil);
+		if(disabledUntil !== null && disabledUntil < new Date())
+		{
+			setDisabledUntil(null);
+		}
+	};
+	useEffect(checkIfDisabledTimeExpired); // run every render - overkill?
 
 	return (
 		<div className="popupContainer">
@@ -60,6 +99,34 @@ export default function Popup()
 						<option key={page} value={page}>{page}</option>
 					))}
 				</select>
+
+				{ disabledUntil !== null ? (
+					<div>
+						<button
+							type="button"
+							onClick={() => setDisabledUntil(null)}
+						>
+							Re-enable extension
+						</button>
+						<h4>
+							{disabledUntilText}
+						</h4>
+					</div>
+				) : (
+					<div>
+						<button
+							type="button"
+							onClick={() =>
+							{
+								const date = new Date();
+								date.setHours(date.getHours() + 24);
+								setDisabledUntil(date);
+							}}
+						>
+							Disable for 24 hours
+						</button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
