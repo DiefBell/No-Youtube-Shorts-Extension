@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useMutation as useAsyncFunction } from "react-query";
+import { useQuery } from "react-query";
 import { getChromeValues } from "../helpers/getChromeValues";
 import { log } from "../helpers/log";
 import { setChromeValues } from "../helpers/setChromeValues";
@@ -11,39 +11,42 @@ type SettingType<T extends keyof INysSettings> = INysSettings[T];
 export const useChromeState = <T extends keyof INysSettings>(
 	name : T,
 	defaultValue : SettingType<T>
-) : [ SettingType<T>, (newValue : SettingType<T>) => void ] =>
+) : [ SettingType<T>, (newValue : SettingType<T>) => Promise<void> ] =>
 {
 	const [ state, setState ] = useState(defaultValue);
 
-	const getChromeState = useAsyncFunction(getChromeValues);
-
-	const getChromeStateOnMount = () =>
+	const getStorageFunction = async () =>
 	{
-		log(`Getting chrome state for ${name}`);
-		getChromeState.mutate([ name ]);
+		const { [name]: storedState } = await getChromeValues([ name ]);
+		log(`Value of ${name} from Chrome sync storage: `, storedState !== undefined ? storedState.toString() : "undefined");
+		return storedState;
 	};
-	useEffect(getChromeStateOnMount, []);
+	const storageQuery = useQuery(name, getStorageFunction);
 
-	const onNewChromeState = () =>
+	const setStateFromChromeStorage = () =>
 	{
-		if(!getChromeState.data) return;
-
-		const value = getChromeState.data[name];
-
-		if(value !== undefined) setState(value);
-		else
+		if(storageQuery.isSuccess) // ensures this effect doesn't run on component mount
 		{
-			setChromeValues({ [name]: value });
+			if(storageQuery.data === undefined)
+			{
+				log("Setting not in Chrome storage, setting to false.");
+				chrome.storage.sync.set({ "nys:hideNavigation": true });
+			}
+			else
+			{
+				log(`Setting hideNavigation to ${storageQuery.data.toString()}`);
+				setState(storageQuery.data);
+			}
 		}
-
-		getChromeState.reset();
 	};
-	useEffect(onNewChromeState, [ getChromeState.isSuccess ]);
+	useEffect(setStateFromChromeStorage, [ storageQuery.isSuccess ]);
 
-	const setNewValue = (newValue : SettingType<T>) =>
+	const setStateWithChromeSync = async (newState : SettingType<T>) =>
 	{
-		setChromeValues({ [name]: newValue });
+		await setChromeValues({ [name]: newState });
+		setState(newState);
 	};
 
-	return [ state, setNewValue ];
+
+	return [ state, setStateWithChromeSync ];
 };

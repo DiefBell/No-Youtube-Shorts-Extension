@@ -1,43 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { useQuery } from "react-query";
+import React, { useEffect } from "react";
 import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
 import "./Popup.scss";
 
 export default function Popup()
 {
-	const [ hideNavigation, setHideNavigation ] = useState(true);
-
-	const getHideNav = async () =>
-	{
-		const rawSetting = await chrome.storage.sync.get([ "nys:hideNavigation" ]);
-		log("Raw settings: ", rawSetting);
-		const value = rawSetting["nys:hideNavigation"];
-		log("Value: ", value !== undefined ? value.toString() : "undefined");
-		return value;
-	};
-	const getHideNavQuery = useQuery("getHideNav", getHideNav);
+	const [ hideNavigation, setHideNavigation ] = useChromeState("hideNavigation", true);
 
 	const broadcastPopupMounted = () => log("Popup opened");
 	useEffect(broadcastPopupMounted, []);
-
-	const getHideNavSetting = () =>
-	{
-		if(getHideNavQuery.isSuccess) // ensures this doesn't run on component mount
-		{
-			if(getHideNavQuery.data === undefined)
-			{
-				log("Setting not in Chrome storage, setting to false.");
-				chrome.storage.sync.set({ "nys:hideNavigation": true });
-			}
-			else
-			{
-				log(`Setting hideNavigation to ${getHideNavQuery.data.toString()}`);
-				setHideNavigation(getHideNavQuery.data);
-			}
-		}
-	};
-	useEffect(getHideNavSetting, [ getHideNavQuery.isSuccess ]);
 
 	const test = () => log("hideNavigation changed to: ", hideNavigation.toString());
 	useEffect(test, [ hideNavigation ]);
@@ -55,12 +26,9 @@ export default function Popup()
 					<div className="slider">
 						<button
 							type="button"
-							// className={hideNavigation ? "settings-button__on" : "settings-button"}
-							onClick={async () =>
-							{
-								await chrome.storage.sync.set({ "nys:hideNavigation": !hideNavigation });
-								setHideNavigation(!hideNavigation);
-							}}
+							// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+							style={{ backgroundColor: hideNavigation ? "red" : "blue" }}
+							onClick={async () => { await setHideNavigation(!hideNavigation); }}
 						>
 							{ hideNavigation ? "show navigation" : "hide navigation" }
 						</button>
