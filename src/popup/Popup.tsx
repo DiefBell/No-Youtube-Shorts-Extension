@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { YoutubePages } from "../constants/YoutubePages";
 import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
@@ -16,8 +16,6 @@ export default function Popup()
 		get: (value) => (value !== null ? new Date(value) : null)
 	});
 
-	const [ disabledUntilText, setDisabledUntilText ] = useState("");
-
 	const deleteAll = () =>
 	{
 		chrome.storage.sync.remove([
@@ -31,26 +29,8 @@ export default function Popup()
 	// uncomment to delete from Chrome sync storage
 	// useEffect(deleteAll, []);
 
-	const updateDisabledUntilTextOnChange = () =>
-	{
-		if(disabledUntil !== null)
-		{
-			const today = new Date();
-			if(today.getDate() === disabledUntil.getDate())
-			{
-				setDisabledUntilText(`Disabled until today at ${disabledUntil.toLocaleTimeString()}`);
-			}
-			else
-			{
-				setDisabledUntilText(`Disabled until tomorrow at ${disabledUntil.toLocaleTimeString()}`);
-			}
-		}
-	};
-	useEffect(updateDisabledUntilTextOnChange, [ disabledUntil ]);
-
 	const checkIfDisabledTimeExpired = () =>
 	{
-		log("Disabled until: ", disabledUntil);
 		if(disabledUntil !== null && disabledUntil < new Date())
 		{
 			setDisabledUntil(null);
@@ -112,7 +92,8 @@ export default function Popup()
 							Re-enable extension
 						</button>
 						<h4>
-							{disabledUntilText}
+							Extension disabled until
+							{` ${disabledUntil.toLocaleTimeString()}`}
 						</h4>
 					</div>
 				) : (
@@ -122,11 +103,11 @@ export default function Popup()
 							onClick={() =>
 							{
 								const date = new Date();
-								date.setHours(date.getHours() + 24);
+								date.setHours(date.getHours() + 1);
 								setDisabledUntil(date);
 							}}
 						>
-							Disable for 24 hours
+							Disable for one hour
 						</button>
 					</div>
 				)}
