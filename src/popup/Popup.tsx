@@ -37,7 +37,7 @@ export default function Popup()
 			setDisabledUntil(null);
 		}
 	};
-	useEffect(checkIfDisabledTimeExpired); // run every render - overkill?
+	useEffect(checkIfDisabledTimeExpired, []);
 
 	return (
 		<div className="popupContainer">
