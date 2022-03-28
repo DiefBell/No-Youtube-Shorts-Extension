@@ -33,6 +33,7 @@ export default function Popup()
 	{
 		if(disabledUntil !== null && disabledUntil < new Date())
 		{
+			// TODO: this should really be getting done by the back-end, else the popup needs opening for it to re-enable
 			setDisabledUntil(null);
 		}
 	};
