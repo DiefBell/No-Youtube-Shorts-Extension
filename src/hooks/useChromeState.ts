@@ -1,35 +1,49 @@
 import { useEffect, useState } from "react";
-import { getChromeSyncValues } from "../helpers/getChromeSyncValues";
-import { setChromeSyncValues } from "../helpers/setChromeSyncValues";
+import { useMutation as useAsyncFunction } from "react-query";
+import { getChromeValues } from "../helpers/getChromeValues";
+import { log } from "../helpers/log";
+import { setChromeValues } from "../helpers/setChromeValues";
 import { INysSettings } from "../types/INysSettings";
 
 type SettingType<T extends keyof INysSettings> = INysSettings[T];
 
+// this all currently assumes no failures
 export const useChromeState = <T extends keyof INysSettings>(
 	name : T,
 	defaultValue : SettingType<T>
-) : [ SettingType<T>, (newState : SettingType<T>) => Promise<void> ] =>
+) : [ SettingType<T>, (newValue : SettingType<T>) => void ] =>
 {
-	const [ state, setState ] = useState<SettingType<T>>(defaultValue);
+	const [ state, setState ] = useState(defaultValue);
 
+	const getChromeState = useAsyncFunction(getChromeValues);
 
-	const syncToChromeStorageOnMount = () =>
+	const getChromeStateOnMount = () =>
 	{
-		getChromeSyncValues([ name ]).then(async ({ [name]: value }) =>
+		log(`Getting chrome state for ${name}`);
+		getChromeState.mutate([ name ]);
+	};
+	useEffect(getChromeStateOnMount, []);
+
+	const onNewChromeState = () =>
+	{
+		if(!getChromeState.data) return;
+
+		const value = getChromeState.data[name];
+
+		if(value !== undefined) setState(value);
+		else
 		{
-			if(value) setState(value as SettingType<T>);
-			else await setChromeSyncValues({ [name]: defaultValue });
-		});
+			setChromeValues({ [name]: value });
+		}
+
+		getChromeState.reset();
 	};
-	useEffect(syncToChromeStorageOnMount, []);
+	useEffect(onNewChromeState, [ getChromeState.isSuccess ]);
 
-
-	const setStateWithChromeSync = async (newState : SettingType<T>) =>
+	const setNewValue = (newValue : SettingType<T>) =>
 	{
-		await setChromeSyncValues({ [name]: newState });
-		setState(newState);
+		setChromeValues({ [name]: newValue });
 	};
 
-
-	return [ state, setStateWithChromeSync ];
+	return [ state, setNewValue ];
 };

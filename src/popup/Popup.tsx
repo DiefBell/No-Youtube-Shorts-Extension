@@ -1,22 +1,46 @@
-import React, { useEffect } from "react";
-import { ToggleSlider } from "react-toggle-slider";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
 import "./Popup.scss";
 
 export default function Popup()
 {
-	const [ hideNavigation, setHideNavigation ] = useChromeState("hideNavigation", true);
-	const [ hideThumbnails, setHideThumbnails ] = useChromeState("hideThumbnails", true);
-	const [ redirectFromShorts, setRedirectFromShorts ] = useChromeState("redirectFromShorts", true);
-	const [ redirectPage, setRedirectPage ] = useChromeState("redirectPage", "home");
-	const [ disableUntil, setDisableUntil ] = useChromeState("disableUntil", null);
+	const [ hideNavigation, setHideNavigation ] = useState(true);
 
-	const broadcastPopupMounted = () =>
+	const getHideNav = async () =>
 	{
-		// Example of how to send a message to background.ts.
-		chrome.runtime.sendMessage({ popupMounted: true });
+		const rawSetting = await chrome.storage.sync.get([ "nys:hideNavigation" ]);
+		log("Raw settings: ", rawSetting);
+		const value = rawSetting["nys:hideNavigation"];
+		log("Value: ", value !== undefined ? value.toString() : "undefined");
+		return value;
 	};
+	const getHideNavQuery = useQuery("getHideNav", getHideNav);
+
+	const broadcastPopupMounted = () => log("Popup opened");
 	useEffect(broadcastPopupMounted, []);
+
+	const getHideNavSetting = () =>
+	{
+		if(getHideNavQuery.isSuccess) // ensures this doesn't run on component mount
+		{
+			if(getHideNavQuery.data === undefined)
+			{
+				log("Setting not in Chrome storage, setting to false.");
+				chrome.storage.sync.set({ "nys:hideNavigation": true });
+			}
+			else
+			{
+				log(`Setting hideNavigation to ${getHideNavQuery.data.toString()}`);
+				setHideNavigation(getHideNavQuery.data);
+			}
+		}
+	};
+	useEffect(getHideNavSetting, [ getHideNavQuery.isSuccess ]);
+
+	const test = () => log("hideNavigation changed to: ", hideNavigation.toString());
+	useEffect(test, [ hideNavigation ]);
 
 	return (
 		<div className="popupContainer">
@@ -29,13 +53,17 @@ export default function Popup()
 				</div>
 				<div className="popup-toggle-section">
 					<div className="slider">
-						<ToggleSlider active={hideNavigation} onToggle={(state) => setHideNavigation(state)} />
-					</div>
-					<div className="slider">
-						<ToggleSlider active={hideThumbnails} onToggle={(state) => setHideThumbnails(state)} />
-					</div>
-					<div className="slider">
-						<ToggleSlider active={redirectFromShorts} onToggle={(state) => setRedirectFromShorts(state)} />
+						<button
+							type="button"
+							// className={hideNavigation ? "settings-button__on" : "settings-button"}
+							onClick={async () =>
+							{
+								await chrome.storage.sync.set({ "nys:hideNavigation": !hideNavigation });
+								setHideNavigation(!hideNavigation);
+							}}
+						>
+							{ hideNavigation ? "show navigation" : "hide navigation" }
+						</button>
 					</div>
 				</div>
 			</div>
