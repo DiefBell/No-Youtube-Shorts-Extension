@@ -51,7 +51,7 @@ const tabChangeHandler = async (
 		hideThumbnails,
 		redirectFromShorts,
 		redirectPage,
-		disabledUntil: disableUntil,
+		disabledUntil,
 	} = await getChromeValues([
 		"hideNavigation",
 		"hideThumbnails",
