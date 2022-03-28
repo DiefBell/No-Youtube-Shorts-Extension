@@ -1,5 +1,5 @@
 import { youtubeDomains } from "./constants/youtubeDomains";
-import { youtubePageSettings } from "./constants/youtubePages";
+import { youtubePageSettings } from "./constants/youtubePageSettings";
 import { getChromeValues } from "./helpers/getChromeValues";
 import { deleteNavigationButton } from "./scripts/deleteNavigationButton";
 import { deleteThumbnails } from "./scripts/deleteThumbnails";

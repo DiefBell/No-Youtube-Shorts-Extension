@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
+import { YoutubePages } from "../constants/YoutubePages";
+import { youtubePageSettings } from "../constants/youtubePageSettings";
 import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
+import { YoutubePage } from "../types/YoutubePage";
 import "./Popup.scss";
 
 export default function Popup()
 {
 	const [ hideNavigation, setHideNavigation ] = useChromeState("hideNavigation", true);
+	const [ hideThumbnails, setHideThumbnails ] = useChromeState("hideThumbnails", true);
+	const [ redirectFromShorts, setRedirectFromShorts ] = useChromeState("redirectFromShorts", true);
+	const [ redirectPage, setRedirectPage ] = useChromeState("redirectPage", "home");
 
 	const broadcastPopupMounted = () => log("Popup opened");
 	useEffect(broadcastPopupMounted, []);
@@ -15,25 +21,45 @@ export default function Popup()
 
 	return (
 		<div className="popupContainer">
-			<h3>Turn off:</h3>
-			<div className="popupContainer-content">
-				<div className="popup-toggle-section">
-					<h5 className="div-heading">Hide Navigation</h5>
-					<h5 className="div-heading">Hide Thumbnails</h5>
-					<h5 className="div-heading">Redirect from shorts</h5>
-				</div>
-				<div className="popup-toggle-section">
-					<div className="slider">
-						<button
-							type="button"
-							// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
-							style={{ backgroundColor: hideNavigation ? "red" : "blue" }}
-							onClick={async () => { await setHideNavigation(!hideNavigation); }}
-						>
-							{ hideNavigation ? "show navigation" : "hide navigation" }
-						</button>
-					</div>
-				</div>
+			<h3>Settings:</h3>
+			<div className="toggles">
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: hideNavigation ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setHideNavigation(!hideNavigation); }}
+				>
+					{ hideNavigation ? "show navigation" : "hide navigation" }
+				</button>
+
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: hideThumbnails ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setHideThumbnails(!hideThumbnails); }}
+				>
+					{ hideThumbnails ? "show thumbnails" : "hide thumbnails" }
+				</button>
+
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: redirectFromShorts ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setRedirectFromShorts(!redirectFromShorts); }}
+				>
+					{ redirectFromShorts ? "don't redirect from shorts" : "redirect from shorts" }
+				</button>
+
+				<select
+					disabled={!redirectFromShorts}
+					name="redirectPage"
+					onChange={(option) => { setRedirectPage(option.target.value as YoutubePage); }}
+					value={redirectPage}
+				>
+					{YoutubePages.filter((page) => page !== "shorts").map((page) => (
+						<option key={page} value={page}>{page}</option>
+					))}
+				</select>
 			</div>
 		</div>
 	);
