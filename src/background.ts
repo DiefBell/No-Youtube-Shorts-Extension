@@ -2,9 +2,9 @@ import { youtubeDomains } from "./constants/youtubeDomains";
 import { youtubePageSettings } from "./constants/youtubePageSettings";
 import { getChromeValues } from "./helpers/getChromeValues";
 import { setChromeValues } from "./helpers/setChromeValues";
-import { deleteNavigationButton } from "./scripts/deleteNavigationButton";
-import { deleteThumbnails } from "./scripts/deleteThumbnails";
+import { addThumbnailRemover } from "./scripts/addThumbnailRemover";
 import { MessagePayload } from "./types/MessagePayload";
+import { addNavButtonRemover } from "./scripts/addNavButtonRemover";
 
 
 const messageHandler = (
@@ -97,7 +97,7 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: deleteThumbnails
+			func: addThumbnailRemover
 		});
 	}
 
@@ -105,7 +105,7 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: deleteNavigationButton
+			func: addNavButtonRemover
 		});
 	}
 };
