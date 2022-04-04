@@ -112,7 +112,6 @@ jobs:
 
           basebranch="${BASE_BRANCH%\"}"
           basebranch="${basebranch#\"}"
-          echo "$basebranch"
 
           git config pull.rebase false
           git config user.name "github-actions"
@@ -120,7 +119,7 @@ jobs:
 
           git branch "$COMBINE_BRANCH_NAME" $basebranch
           git checkout "$COMBINE_BRANCH_NAME"
-          git pull origin "$sourcebranches main" --no-edit
+          git pull origin "$sourcebranches" --no-edit
           git push origin "$COMBINE_BRANCH_NAME"
       # Creates a PR with the new combined branch
       - uses: actions/github-script@v3
