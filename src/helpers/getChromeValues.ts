@@ -14,7 +14,7 @@ export const getChromeValues = async (keys : (keyof INysSettings)[]) : Promise<P
 	// remove the prefixes in the final object
 	const valuesNoPrefixes = removePrefixFromKeys(values) as Partial<INysSettings>;
 
-	log("Getting chrome values: ", valuesNoPrefixes.toString());
+	console.log("Getting chrome values: ", valuesNoPrefixes.toString());
 
 	return valuesNoPrefixes;
 };
