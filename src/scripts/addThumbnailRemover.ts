@@ -40,6 +40,7 @@ export const addThumbnailRemover = () =>
 	};
 
 	window.thumbnailRemover = new MutationObserver(thumbnailRemoverCallback);
-	const youtubeRootNode = document.querySelector("ytd-app");
+	const youtubeRootNode = document.querySelector("ytd-app, ytm-app");
+	console.log(youtubeRootNode);
 	window.thumbnailRemover.observe(youtubeRootNode, { subtree: true, childList: true });
 };

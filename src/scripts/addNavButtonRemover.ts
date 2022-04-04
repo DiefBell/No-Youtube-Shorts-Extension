@@ -7,6 +7,7 @@ export const addNavButtonRemover = () =>
 
 	const navButtonRemoverCallback = (mutations : MutationRecord[]) =>
 	{
+		// need to work out how this can be moved into its own file...
 		const nodeIsElement = (node : Node) : node is Element => !!(node as Element).matches;
 
 		const addedNodes = mutations
@@ -18,11 +19,19 @@ export const addNavButtonRemover = () =>
 		{
 			if(nodeIsElement(node))
 			{
-				if(node.matches("ytd-mini-guide-entry-renderer"))
+				const isMiniNavButton = node.matches("ytd-mini-guide-entry-renderer");
+				const isBigNavButton = node.matches("ytd-guide-entry-renderer");
+				const isMobileNavButton = node.matches("ytm-pivot-bar-item-renderer");
+
+				if(isMiniNavButton || isBigNavButton || isMobileNavButton)
 				{
 					if(node.querySelector("a[title='Shorts']"))
 					{
-						console.log("No YouTube Shorts: removing navigation button");
+						const buttonName = (isMiniNavButton && "mini")
+							|| (isBigNavButton && "big")
+							|| (isMobileNavButton && "mobile");
+
+						console.log(`No YouTube Shorts: removing ${buttonName} navigation button`);
 						node.remove();
 					}
 				}
@@ -31,6 +40,6 @@ export const addNavButtonRemover = () =>
 	};
 
 	window.navButtonRemover = new MutationObserver(navButtonRemoverCallback);
-	const youtubeRootNode = document.querySelector("ytd-app");
+	const youtubeRootNode = document.querySelector("ytd-app, ytm-app");
 	window.navButtonRemover.observe(youtubeRootNode, { subtree: true, childList: true });
 };
