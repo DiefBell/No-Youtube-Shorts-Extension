@@ -1,5 +1,7 @@
 import { INysSettings } from "../types/INysSettings";
 import { storagePrefix } from "../constants/storagePrefix";
+import { removePrefixFromKeys } from "./removePrefixFromKeys";
+import { log } from "./log";
 
 export const getChromeValues = async (keys : (keyof INysSettings)[]) : Promise<Partial<INysSettings>> =>
 {
@@ -10,7 +12,9 @@ export const getChromeValues = async (keys : (keyof INysSettings)[]) : Promise<P
 	const values = await chrome.storage.sync.get(keysPrefixed);
 
 	// remove the prefixes in the final object
-	return Object.fromEntries(
-		Object.entries(values).map(([ k, v ]) => [ k.replace(storagePrefix, ""), v ])
-	) as Partial<INysSettings>;
+	const valuesNoPrefixes = removePrefixFromKeys(values) as Partial<INysSettings>;
+
+	log("Getting chrome values: ", valuesNoPrefixes.toString());
+
+	return valuesNoPrefixes;
 };

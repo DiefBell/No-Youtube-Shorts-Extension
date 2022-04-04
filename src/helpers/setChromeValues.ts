@@ -1,11 +1,9 @@
 import { INysSettings } from "../types/INysSettings";
-import { storagePrefix } from "../constants/storagePrefix";
+import { addPrefixToKeys } from "./addPrefixToKeys";
+import { log } from "./log";
 
 export const setChromeValues = async (values : Partial<INysSettings>) : Promise<void> =>
 {
-	const valuesWithKeysPrefixed = Object.fromEntries(
-		Object.entries(values).map(([ k, v ]) => [ `${storagePrefix}:${k}`, v ])
-	);
-
-	await chrome.storage.sync.set(valuesWithKeysPrefixed);
+	log("Setting chrome values: ");
+	await chrome.storage.sync.set(addPrefixToKeys(values));
 };

@@ -1,6 +1,7 @@
 import { youtubeDomains } from "./constants/youtubeDomains";
-import { youtubePageSettings } from "./constants/youtubePages";
+import { youtubePageSettings } from "./constants/youtubePageSettings";
 import { getChromeValues } from "./helpers/getChromeValues";
+import { setChromeValues } from "./helpers/setChromeValues";
 import { deleteNavigationButton } from "./scripts/deleteNavigationButton";
 import { deleteThumbnails } from "./scripts/deleteThumbnails";
 import { MessagePayload } from "./types/MessagePayload";
@@ -51,14 +52,32 @@ const tabChangeHandler = async (
 		hideThumbnails,
 		redirectFromShorts,
 		redirectPage,
-		disableUntil,
+		disabledUntil: disabledUntilJson,
 	} = await getChromeValues([
 		"hideNavigation",
 		"hideThumbnails",
 		"redirectFromShorts",
 		"redirectPage",
-		"disableUntil"
+		"disabledUntil"
 	]);
+
+	// cast disabledUntil from JSON to Date object
+	let disabledUntil = disabledUntilJson !== null ? new Date(disabledUntilJson) : null;
+	if(disabledUntil !== null)
+	{
+		// check whether the disabledUntil time has passed
+		if(new Date() > disabledUntil)
+		{
+			// reset if passed
+			setChromeValues({ disabledUntil: null });
+			disabledUntil = null;
+		}
+		else
+		{
+			// don't run the rest of this handler if the extension is still disabled
+			return;
+		}
+	}
 
 	if(redirectFromShorts === undefined || redirectFromShorts === true)
 	{

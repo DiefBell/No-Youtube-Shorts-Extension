@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import { ToggleSlider } from "react-toggle-slider";
+import { YoutubePages } from "../constants/YoutubePages";
+import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
+import { YoutubePage } from "../types/YoutubePage";
 import "./Popup.scss";
 
 export default function Popup()
@@ -9,62 +11,107 @@ export default function Popup()
 	const [ hideThumbnails, setHideThumbnails ] = useChromeState("hideThumbnails", true);
 	const [ redirectFromShorts, setRedirectFromShorts ] = useChromeState("redirectFromShorts", true);
 	const [ redirectPage, setRedirectPage ] = useChromeState("redirectPage", "home");
-	const [ disableUntil, setDisableUntil ] = useChromeState("disableUntil", null);
+	const [ disabledUntil, setDisabledUntil ] = useChromeState("disabledUntil", null, {
+		set: (value) => (value !== null ? value.toJSON() : null),
+		get: (value) => (value !== null ? new Date(value) : null)
+	});
 
-	const broadcastPopupMounted = () =>
+	const deleteAll = () =>
 	{
-		// Example of how to send a message to background.ts.
-		chrome.runtime.sendMessage({ popupMounted: true });
+		chrome.storage.sync.remove([
+			"nys:disableUntil",
+			"nys:hideNavigation",
+			"nys:hideThumbnails",
+			"nys:redirectFromShorts",
+			"nyt:disableUntil"
+		]);
 	};
-	useEffect(broadcastPopupMounted, []);
+	// uncomment to delete from Chrome sync storage
+	// useEffect(deleteAll, []);
+
+	const checkIfDisabledTimeExpired = () =>
+	{
+		if(disabledUntil !== null && disabledUntil < new Date())
+		{
+			// TODO: this should really be getting done by the back-end, else the popup needs opening for it to re-enable
+			setDisabledUntil(null);
+		}
+	};
+	useEffect(checkIfDisabledTimeExpired, []);
 
 	return (
 		<div className="popupContainer">
-			<div className="grey-div">
-				<h3>Turn off:</h3>
-				<hr className="hr-divider" />
-			</div>
-			<div className="popupContainer-content">
-				<div className="popup-toggle-section">
-					<h5 className="div-heading">Hide Navigation</h5>
-					<h5 className="div-heading">Hide Thumbnails</h5>
-					<h5 className="div-heading">Redirect from shorts</h5>
-				</div>
-				<div className="popup-toggle-section">
-					<div className="slider">
-						<ToggleSlider
-							active={hideNavigation}
-							handleBackgroundColor="#D9D9D9"
-							barBackgroundColorActive="#FF1616"
-							barBackgroundColor="#000000"
-							barWidth={49}
-							barHeight={23}
-							onToggle={(state) => setHideNavigation(state)}
-						/>
+			<h3>Settings:</h3>
+			<div className="toggles">
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: hideNavigation ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setHideNavigation(!hideNavigation); }}
+					disabled={disabledUntil !== null}
+				>
+					{ hideNavigation ? "show navigation" : "hide navigation" }
+				</button>
+
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: hideThumbnails ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setHideThumbnails(!hideThumbnails); }}
+					disabled={disabledUntil !== null}
+				>
+					{ hideThumbnails ? "show thumbnails" : "hide thumbnails" }
+				</button>
+
+				<button // we should create a new component for this button maybe? And move the states into it?
+					type="button"
+					// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
+					style={{ backgroundColor: redirectFromShorts ? "red" : "blue" }} // swap for className
+					onClick={async () => { await setRedirectFromShorts(!redirectFromShorts); }}
+					disabled={disabledUntil !== null}
+				>
+					{ redirectFromShorts ? "don't redirect from shorts" : "redirect from shorts" }
+				</button>
+
+				<select
+					disabled={!redirectFromShorts || disabledUntil !== null}
+					name="redirectPage"
+					onChange={(option) => { setRedirectPage(option.target.value as YoutubePage); }}
+					value={redirectPage}
+				>
+					{YoutubePages.filter((page) => page !== "shorts").map((page) => (
+						<option key={page} value={page}>{page}</option>
+					))}
+				</select>
+
+				{ disabledUntil !== null ? (
+					<div>
+						<button
+							type="button"
+							onClick={() => setDisabledUntil(null)}
+						>
+							Re-enable extension
+						</button>
+						<h4>
+							Extension disabled until
+							{` ${disabledUntil.toLocaleTimeString()}`}
+						</h4>
 					</div>
-					<div className="slider">
-						<ToggleSlider
-							active={hideThumbnails}
-							handleBackgroundColor="#D9D9D9"
-							barBackgroundColorActive="#FF1616"
-							barBackgroundColor="#000000"
-							barWidth={49}
-							barHeight={23}
-							onToggle={(state) => setHideThumbnails(state)}
-						/>
+				) : (
+					<div>
+						<button
+							type="button"
+							onClick={() =>
+							{
+								const date = new Date();
+								date.setHours(date.getHours() + 1);
+								setDisabledUntil(date);
+							}}
+						>
+							Disable for one hour
+						</button>
 					</div>
-					<div className="slider">
-						<ToggleSlider
-							active={redirectFromShorts}
-							handleBackgroundColor="#D9D9D9"
-							barBackgroundColorActive="#FF1616"
-							barBackgroundColor="#000000"
-							barWidth={49}
-							barHeight={23}
-							onToggle={(state) => setRedirectFromShorts(state)}
-						/>
-					</div>
-				</div>
+				)}
 			</div>
 		</div>
 	);

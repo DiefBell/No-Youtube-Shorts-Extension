@@ -1,5 +1,3 @@
-export type YoutubePage =
-	"home" |
-	"explore" |
-	"shorts" |
-	"subscriptions";
+import { YoutubePages } from "../constants/YoutubePages";
+
+export type YoutubePage = typeof YoutubePages[number];
