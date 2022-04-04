@@ -86,6 +86,7 @@ export default function Popup()
 
 				{ disabledUntil !== null ? (
 					<div>
+						{/* comment */}
 						<button
 							type="button"
 							onClick={() => setDisabledUntil(null)}
