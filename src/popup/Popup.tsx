@@ -62,6 +62,10 @@ export default function Popup()
 	return (
 		<div className="popupContainer">
 			<h3>Settings:</h3>
+			<hr style={{
+				width: "90%", backgroundColor: "red", marginTop: "0", marginBottom: "4px", padding: "0", height: "2px", border: "none"
+			}}
+			/>
 			<div className="two-columns">
 				<div className="button-container button-container-left">
 					<button // we should create a new component for this button maybe? And move the states into it?
@@ -69,7 +73,8 @@ export default function Popup()
 						type="button"
 						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
-							backgroundColor: hideNavigation ? "red" : "grey",
+							backgroundColor: hideNavigation ? "red" : "#C7D0D8",
+							color: hideNavigation ? "white" : "black",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -85,7 +90,8 @@ export default function Popup()
 						type="button"
 						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
-							backgroundColor: hideThumbnails ? "red" : "grey",
+							backgroundColor: hideThumbnails ? "red" : "#C7D0D8",
+							color: hideThumbnails ? "white" : "black",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -103,7 +109,8 @@ export default function Popup()
 						style={{
 							backgroundColor: redirectFromShorts
 								? "red"
-								: "grey",
+								: "#C7D0D8",
+							color: redirectFromShorts ? "white" : "black",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -117,6 +124,7 @@ export default function Popup()
 					</button>
 
 					<select
+						className="redirection-menu"
 						disabled={!redirectFromShorts || disabledUntil !== null}
 						name="redirectPage"
 						onChange={(option) =>
@@ -138,16 +146,19 @@ export default function Popup()
 					{disabledUntil !== null ? (
 						<div>
 							<button
-								className="show-hide-button"
+								className="show-hide-button enable-disable-extension"
 								type="button"
 								onClick={() => setDisabledUntil(null)}
 							>
-								Re-enable extension
+
+								<FontAwesomeIcon icon={faPowerOff} />
+
+								<span className="smaller-text">Turn on</span>
 							</button>
-							<h4>
+							{/* <h4>
 								Extension disabled until
 								{` ${disabledUntil.toLocaleTimeString()}`}
-							</h4>
+							</h4> */}
 						</div>
 					) : (
 						<div>
@@ -161,13 +172,24 @@ export default function Popup()
 									setDisabledUntil(date);
 								}}
 							>
-								<FontAwesomeIcon icon={faPowerOff} />
+								<span className="off-icon">
+									<FontAwesomeIcon icon={faPowerOff} />
+								</span>
 								<br />
-								1hr
+								<span className="smaller-text">1hr</span>
+
 							</button>
 						</div>
 					)}
 				</div>
+			</div>
+			<div>
+				{disabledUntil !== null ? (
+					<h4 className="disabled-until">
+						Extension disabled until
+						{` ${disabledUntil.toLocaleTimeString()}`}
+					</h4>
+				) : ("")}
 			</div>
 		</div>
 	);
