@@ -65,7 +65,7 @@ export default function Popup()
 						type="button"
 						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
-							backgroundColor: hideNavigation ? "red" : "blue",
+							backgroundColor: hideNavigation ? "red" : "grey",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -73,7 +73,7 @@ export default function Popup()
 						}}
 						disabled={disabledUntil !== null}
 					>
-						{hideNavigation ? "show navigation" : "hide navigation"}
+						{hideNavigation ? "Navigation blocked" : "Navigation on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
@@ -81,7 +81,7 @@ export default function Popup()
 						type="button"
 						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
-							backgroundColor: hideThumbnails ? "red" : "blue",
+							backgroundColor: hideThumbnails ? "red" : "grey",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -89,7 +89,7 @@ export default function Popup()
 						}}
 						disabled={disabledUntil !== null}
 					>
-						{hideThumbnails ? "Thumbnails off" : "Thumbnails on"}
+						{hideThumbnails ? "Thumbnails blocked" : "Thumbnails on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
@@ -99,7 +99,7 @@ export default function Popup()
 						style={{
 							backgroundColor: redirectFromShorts
 								? "red"
-								: "blue",
+								: "grey",
 						}} // swap for className
 						onClick={async () =>
 						{
@@ -108,8 +108,8 @@ export default function Popup()
 						disabled={disabledUntil !== null}
 					>
 						{redirectFromShorts
-							? "don't redirect from shorts"
-							: "redirect from shorts"}
+							? "You'll be redirected to:"
+							: "Redirection off"}
 					</button>
 
 					<select

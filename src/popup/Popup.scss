@@ -8,7 +8,7 @@ body {
 }
 
 .popupContainer{
-    background-color: pink;
+    background-color: #FFFFFF;
     width: 250px;
     padding: 4px;
   
@@ -28,15 +28,18 @@ body {
     flex-direction: column;
 }
 .button-container-left{
-    width: 60%;
+    width: 70%;
     padding-right: 2px;
 }
 .button-container-right{
-    width: 40%;
+    width: 30%;
     padding-left: 2px;
 }
 .show-hide-button{
     border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
     text-align: left;
-    margin:2px
+    margin:2px;
+    padding:3px;
 }
