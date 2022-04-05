@@ -1,9 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect } from "react";
 import { YoutubePages } from "../constants/YoutubePages";
 import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
 import { YoutubePage } from "../types/YoutubePage";
 import "./Popup.scss";
+
+
 
 export default function Popup()
 {
@@ -148,6 +152,7 @@ export default function Popup()
 					) : (
 						<div>
 							<button
+								className="enable-disable-extension"
 								type="button"
 								onClick={() =>
 								{
@@ -156,7 +161,9 @@ export default function Popup()
 									setDisabledUntil(date);
 								}}
 							>
-								Disable for one hour
+								<FontAwesomeIcon icon={faPowerOff} />
+								<br />
+								1hr
 							</button>
 						</div>
 					)}
