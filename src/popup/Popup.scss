@@ -7,16 +7,11 @@ body {
     padding: 0;
 }
 
-.popupContainer {
-    align-items: center;
-    background-color: $background-color;
-    border: none;
-    border-radius: 2px;
-    color: $primary-color;
-    font-size: 20px;
-    height: 135px;
-    justify-content: space-evenly;
+.popupContainer{
+    background-color: pink;
     width: 250px;
+    padding: 4px;
+  
 }
 .popupContainer h3{
     font-weight: bolder;
@@ -24,38 +19,24 @@ body {
     padding: 0px 10px;
     font-size: 25px;
 }
-.popupContainer-content{
-    align-items: left;
-    border-radius: 2px;
+.two-columns{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-
 }
-
-.popup-toggle-section{
-    padding: 2px;
+.button-container{
     display: flex;
     flex-direction: column;
-    height: 50px;;
 }
-.toggles{
-    padding: 2px 0px;;
+.button-container-left{
+    width: 60%;
+    padding-right: 2px;
 }
-.div-heading{
-    padding: 4px 5px;
-    margin: 0;
-    height:50px;
-    font-weight: 400;
+.button-container-right{
+    width: 40%;
+    padding-left: 2px;
 }
-
-.hr-divider{
-    margin-block-start: 2px;
-    margin-block-end: 2px;
-    width: 100%;
-    background-color: #FF1616;
-    height: 2px;
-}
-.grey-div{
-    background-color: #C7D0D8;
+.show-hide-button{
+    border-radius: 5px;
+    text-align: left;
+    margin:2px
 }
