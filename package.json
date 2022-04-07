@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-react-typescript-boilerplate",
-  "version": "1.1.0",
-  "description": "A boilerplate project to quickly build a Chrome extension using TypeScript and React (built using webpack).",
+	"name": "no-youtube-shorts",
+	"version": "1.0.0",
+	"description": "A Google Chrome extension to hide YouTube shorts",
   "scripts": {
     "build": "yarn lint && webpack --config webpack.prod.js",
     "dev": "yarn lint:fix && webpack --config webpack.dev.js",
@@ -14,31 +14,36 @@
   "devDependencies": {
     "@types/chrome": "^0.0.180",
     "@types/jsdom": "^16.2.14",
-    "@types/react": "^17.0.41",
+    "@types/react": "^17.0.43",
     "@types/react-dom": "^17.0.14",
+    "@types/react-fontawesome": "^1.6.5",
     "@typescript-eslint/eslint-plugin": "^5.16.0",
-    "@typescript-eslint/parser": "^5.15.0",
+    "@typescript-eslint/parser": "^5.17.0",
     "css-loader": "^6.7.1",
-    "eslint": "^8.11.0",
+    "eslint": "^8.12.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^16.1.4",
-    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-import-resolver-typescript": "^2.7.1",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.3.0",
+    "eslint-plugin-react-hooks": "^4.4.0",
     "node-sass": "^7.0.1",
     "sass-loader": "^12.6.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.8",
-    "typescript": "^4.6.2",
+    "typescript": "^4.6.3",
     "webpack": "^5.70.0",
     "webpack-cli": "^4.9.2",
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free-solid": "^5.0.13",
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-toggle-slider": "^0.4.0"
+    "react-query": "^3.34.17"
   }
 }

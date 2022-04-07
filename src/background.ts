@@ -1,31 +1,34 @@
 import { youtubeDomains } from "./constants/youtubeDomains";
-import { youtubePageSettings } from "./constants/youtubePages";
-import { getChromeSyncValues } from "./helpers/getChromeSyncValues";
-import { deleteNavigationButton } from "./scripts/deleteNavigationButton";
-import { deleteThumbnails } from "./scripts/deleteThumbnails";
+import { youtubePageSettings } from "./constants/youtubePageSettings";
+import { getChromeValues } from "./helpers/getChromeValues";
+import { setChromeValues } from "./helpers/setChromeValues";
+import { addThumbnailRemover } from "./scripts/addThumbnailRemover";
+import { MessagePayload } from "./types/MessagePayload";
+import { addNavButtonRemover } from "./scripts/addNavButtonRemover";
 
 
-
-// Listen to messages sent from other parts of the extension.
-const popupMountedHandler = (
-	request : any,
+const messageHandler = (
+	request : MessagePayload,
 	sender : chrome.runtime.MessageSender,
-	sendResponse : (response ?: any) => void,
-) =>
+	sendResponse : (response ?: any) => void
+) : boolean =>
 {
-	// onMessage must return "true" if response is async.
-	const isResponseAsync = true;
+	const isResponseAsync = false;
 
-	if (request.popupMounted)
+	switch(request.type)
 	{
-		console.log("background worker notified that Popup.tsx has mounted.");
+	case "LOG":
+		if(request.args) console.log(`No Youtube Shorts: ${request.msg}`, request.args); // eslint-disable-line no-console
+		else console.log(`No YouTube Shorts: ${request.msg}`); // eslint-disable-line no-console
+		break;
+	default:
+		break;
 	}
 
+	sendResponse();
 	return isResponseAsync;
 };
-
-chrome.runtime.onMessage.addListener(popupMountedHandler);
-
+chrome.runtime.onMessage.addListener(messageHandler);
 
 
 const tabChangeHandler = async (
@@ -49,14 +52,32 @@ const tabChangeHandler = async (
 		hideThumbnails,
 		redirectFromShorts,
 		redirectPage,
-		disableUntil,
-	} = await getChromeSyncValues([
+		disabledUntil: disabledUntilJson,
+	} = await getChromeValues([
 		"hideNavigation",
 		"hideThumbnails",
 		"redirectFromShorts",
 		"redirectPage",
-		"disableUntil"
+		"disabledUntil"
 	]);
+
+	// cast disabledUntil from JSON to Date object
+	let disabledUntil = disabledUntilJson !== null ? new Date(disabledUntilJson) : null;
+	if(disabledUntil !== null)
+	{
+		// check whether the disabledUntil time has passed
+		if(new Date() > disabledUntil)
+		{
+			// reset if passed
+			setChromeValues({ disabledUntil: null });
+			disabledUntil = null;
+		}
+		else
+		{
+			// don't run the rest of this handler if the extension is still disabled
+			return;
+		}
+	}
 
 	if(redirectFromShorts === undefined || redirectFromShorts === true)
 	{
@@ -76,7 +97,7 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: deleteThumbnails
+			func: addThumbnailRemover
 		});
 	}
 
@@ -84,7 +105,7 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: deleteNavigationButton
+			func: addNavButtonRemover
 		});
 	}
 };

@@ -19,7 +19,7 @@
         "scripting"
 	],
 	"host_permissions": [
-		"https://www.youtube.com/*"
+		"https://*.youtube.com/*"
     ],
     "action": {
         "default_title": "YT No Shorts",
