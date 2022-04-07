@@ -7,55 +7,98 @@ body {
     padding: 0;
 }
 
-.popupContainer {
-    align-items: center;
-    background-color: $background-color;
-    border: none;
-    border-radius: 2px;
-    color: $primary-color;
-    font-size: 20px;
-    height: 135px;
-    justify-content: space-evenly;
-    width: 250px;
+.popupContainer{
+    background-color: #FFFFFF;
+    width: 275px;
+    padding: 10px;
+  
 }
 .popupContainer h3{
-    font-weight: bolder;
+    font-weight: bold;
     margin: 0;
     padding: 0px 10px;
     font-size: 25px;
 }
-.popupContainer-content{
-    align-items: left;
-    border-radius: 2px;
+.two-columns{
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-
 }
-
-.popup-toggle-section{
-    padding: 2px;
+.button-container{
     display: flex;
     flex-direction: column;
-    height: 50px;;
 }
-.toggles{
-    padding: 2px 0px;;
+.button-container-left{
+    width: 80%;
+    padding-right: 3px;
 }
-.div-heading{
-    padding: 4px 5px;
-    margin: 0;
-    height:50px;
-    font-weight: 400;
+.button-container-right{
+    width: 20%;
+    // padding-left: 3px;
+}
+.show-hide-button{
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    text-align: left;
+    margin:4px;
+    padding:6px;
+}
+.show-hide-button__off{
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    text-align: left;
+    margin:4px;
+    padding:6px;
+}
+.show-hide-button-2{
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    text-align: left;
+    
+    padding:6px;
+}
+.enable-disable-extension{
+    font-size: 28px;
+    border: none;
+    width: 100%;
+    padding: 3px;
+    margin-top:2px;
+    padding-right: 2px;
+    border-radius: 5px;
+    background-color: #C7D0D8;
+    text-align: center;
+}
+.smaller-text{
+    font-size: 20px;
+}
+.off-icon{
+    font-weight: bold;
 }
 
-.hr-divider{
-    margin-block-start: 2px;
-    margin-block-end: 2px;
-    width: 100%;
-    background-color: #FF1616;
-    height: 2px;
+.redirection-menu{
+    background-color: black;
+    color: white;
+    width: 60%;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    margin-top: 2px;
+    margin-left: 3px;
 }
-.grey-div{
-    background-color: #C7D0D8;
+.redirection-menu__off{
+    background-color: black;
+    color: white;
+    width: 60%;
+    border: none;
+    border-radius: 5px;
+    padding: 3px;
+    margin-top: 2px;
+    margin-left: 3px;
+}
+.disabled-until{
+    padding-left: 5px;
+    margin-bottom: 3px;
+    margin-top: 7px;
 }
