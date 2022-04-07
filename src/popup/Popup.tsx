@@ -69,54 +69,51 @@ export default function Popup()
 			<div className="two-columns">
 				<div className="button-container button-container-left">
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className="show-hide-button"
+						className={hideNavigation ? "show-hide-button" : "show-hide-button__off"}
+						disabled={!!disabledUntil}
 						type="button"
-						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
 							backgroundColor: hideNavigation ? "red" : "#C7D0D8",
 							color: hideNavigation ? "white" : "black",
-						}} // swap for className
+						}}
 						onClick={async () =>
 						{
 							await setHideNavigation(!hideNavigation);
 						}}
-						disabled={disabledUntil !== null}
 					>
 						{hideNavigation ? "Navigation blocked" : "Navigation on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className="show-hide-button"
+						className={hideThumbnails ? "show-hide-button" : "show-hide-button__off"}
+						disabled={!!disabledUntil}
 						type="button"
-						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
 							backgroundColor: hideThumbnails ? "red" : "#C7D0D8",
 							color: hideThumbnails ? "white" : "black",
-						}} // swap for className
+						}}
 						onClick={async () =>
 						{
 							await setHideThumbnails(!hideThumbnails);
 						}}
-						disabled={disabledUntil !== null}
 					>
 						{hideThumbnails ? "Thumbnails blocked" : "Thumbnails on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className="show-hide-button"
+						className={redirectFromShorts ? "show-hide-button" : "show-hide-button__off"}
+						disabled={!!disabledUntil}
 						type="button"
-						// className={hideNavigation ? "settings-button__on" : "settings-button__off"}
 						style={{
 							backgroundColor: redirectFromShorts
 								? "red"
 								: "#C7D0D8",
 							color: redirectFromShorts ? "white" : "black",
-						}} // swap for className
+						}}
 						onClick={async () =>
 						{
 							await setRedirectFromShorts(!redirectFromShorts);
 						}}
-						disabled={disabledUntil !== null}
 					>
 						{redirectFromShorts
 							? "You'll be redirected to:"
@@ -124,8 +121,8 @@ export default function Popup()
 					</button>
 
 					<select
-						className="redirection-menu"
-						disabled={!redirectFromShorts || disabledUntil !== null}
+						className={redirectFromShorts ? "redirection-menu" : "redirection-menu__off"}
+						disabled={!!disabledUntil}
 						name="redirectPage"
 						onChange={(option) =>
 						{
