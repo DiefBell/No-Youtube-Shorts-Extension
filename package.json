@@ -1,7 +1,7 @@
 {
-  "name": "chrome-extension-react-typescript-boilerplate",
-  "version": "1.1.0",
-  "description": "A boilerplate project to quickly build a Chrome extension using TypeScript and React (built using webpack).",
+	"name": "no-youtube-shorts",
+	"version": "1.0.0",
+	"description": "A Google Chrome extension to hide YouTube shorts",
   "scripts": {
     "build": "yarn lint && webpack --config webpack.prod.js",
     "dev": "yarn lint:fix && webpack --config webpack.dev.js",
