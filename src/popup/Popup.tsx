@@ -63,7 +63,7 @@ export default function Popup()
 		<div className="popupContainer">
 			<h3>Settings:</h3>
 			<hr style={{
-				width: "90%", backgroundColor: "red", marginTop: "0", marginBottom: "4px", padding: "0", height: "2px", border: "none"
+				width: "90%", backgroundColor: "red", marginTop: "0", marginBottom: "4px", padding: "0", height: "3px", border: "none"
 			}}
 			/>
 			<div className="two-columns">
@@ -146,7 +146,7 @@ export default function Popup()
 					{disabledUntil !== null ? (
 						<div>
 							<button
-								className="show-hide-button enable-disable-extension"
+								className="show-hide-button-2 enable-disable-extension"
 								type="button"
 								onClick={() => setDisabledUntil(null)}
 							>
@@ -163,7 +163,7 @@ export default function Popup()
 					) : (
 						<div>
 							<button
-								className="enable-disable-extension"
+								className="enable-disable-extension "
 								type="button"
 								onClick={() =>
 								{
@@ -176,7 +176,7 @@ export default function Popup()
 									<FontAwesomeIcon icon={faPowerOff} />
 								</span>
 								<br />
-								<span className="smaller-text">1hr</span>
+								<span className="smaller-text">Turn off</span>
 
 							</button>
 						</div>

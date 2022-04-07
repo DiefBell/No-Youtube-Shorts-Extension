@@ -9,8 +9,8 @@ body {
 
 .popupContainer{
     background-color: #FFFFFF;
-    width: 265px;
-    padding: 6px;
+    width: 275px;
+    padding: 10px;
   
 }
 .popupContainer h3{
@@ -29,19 +29,27 @@ body {
 }
 .button-container-left{
     width: 80%;
-    padding-right: 2px;
+    padding-right: 3px;
 }
 .button-container-right{
     width: 20%;
-    padding-left: 2px;
+    // padding-left: 3px;
 }
 .show-hide-button{
     border-radius: 5px;
     border: none;
     color: #FFFFFF;
     text-align: left;
-    margin:2px;
-    padding:4px;
+    margin:4px;
+    padding:6px;
+}
+.show-hide-button-2{
+    border-radius: 5px;
+    border: none;
+    color: #FFFFFF;
+    text-align: left;
+    
+    padding:6px;
 }
 .enable-disable-extension{
     font-size: 28px;
@@ -62,15 +70,17 @@ body {
 }
 
 .redirection-menu{
-    background-color: red;
+    background-color: black;
     color: white;
     width: 60%;
     border: none;
     border-radius: 5px;
     padding: 3px;
+    margin-top: 2px;
+    margin-left: 3px;
 }
 .disabled-until{
     padding-left: 5px;
     margin-bottom: 3px;
-    margin-top: 4px;
+    margin-top: 7px;
 }
