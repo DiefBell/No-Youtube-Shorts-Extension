@@ -7,7 +7,7 @@
 
 ### To-do:
 - Better logger
-- Jazz up the popup UI a bit
+- Jazz up the popup UI a bit (see AdBlock's popup)
 - Add buy-me-a-coffee
 - Custom page for settings
 - All user to set custom disabled time (settings page?)
@@ -15,3 +15,4 @@
 - Remove link to explore page
 - Fix some weird error in chrome://extensions (something about a promise??)
 - Check for mobile/different screen sizes
+- Fix issue where nav button isn't always removed.
