@@ -13,3 +13,5 @@
 - All user to set custom disabled time (settings page?)
 - Remove "Shorts" section from home page
 - Remove link to explore page
+- Fix some weird error in chrome://extensions (something about a promise??)
+- Check for mobile/different screen sizes
