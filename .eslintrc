@@ -17,6 +17,8 @@
 		"*.css"
 	],
 	"rules": {
+		"eol-last": "error",
+		"implicit-arrow-linebreak": "off",
 		"no-plusplus": "off",
 		"no-console": "off",
 		// base rule needs to be off for the TS rule to work
