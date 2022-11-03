@@ -16,3 +16,4 @@
 - Fix some weird error in chrome://extensions (something about a promise??)
 - Check for mobile/different screen sizes
 - Fix issue where nav button isn't always removed.
+- Add some unit and integration tests
