@@ -3,7 +3,16 @@ declare const window : Window & typeof globalThis & { thumbnailRemover ?: Mutati
 
 export const addThumbnailRemover = () =>
 {
-	if(window.thumbnailRemover) return;
+	// this has to be inside here for it to get bundled by WebPack
+	const nthParent = (element : Element, n : number) =>
+	{
+		let parent = element;
+		for(let i = 0; i < n; i++)
+		{
+			parent = parent.parentElement;
+		}
+		return parent;
+	};
 
 	const thumbnailRemoverCallback = (mutations : MutationRecord[]) =>
 	{
@@ -16,31 +25,50 @@ export const addThumbnailRemover = () =>
 
 		addedNodes.forEach((nodes) => nodes.forEach((node) =>
 		{
+			// console.log((node as any).tagName);
 			if(nodeIsElement(node))
 			{
-				if(node.matches("ytd-grid-video-renderer"))
-				{
-					const removeThumbnailIfShort = () =>
-					{
-						// YouTube uses custom HTML tags, so selectors won't work
-						// would be nice to find a way of doing this that doesn't require the setTimeout
-						const overlayNodes = node.getElementsByTagName("ytd-thumbnail-overlay-time-status-renderer");
+				const isShortsOverlay = node.tagName === "YTD-THUMBNAIL-OVERLAY-TIME-STATUS-RENDERER"
+					&& node.getAttribute("overlay-style") === "SHORTS";
 
-						if(overlayNodes[0]?.matches("[overlay-style='SHORTS']"))
-						{
-							console.log("No Youtube Shorts: removing thumbnail");
-							node.remove();
-						}
+				if(isShortsOverlay)
+				{
+					console.log("Video renderer");
+
+					const thumbnail = nthParent(node, 5);
+					console.log(thumbnail);
+
+					const removeThumbnail = () =>
+					{
+						node.remove();
 					};
+
 					// need to ensure that the item is RENDERED, as well as its DOM node existing
-					setTimeout(removeThumbnailIfShort, 0);
+					setTimeout(removeThumbnail, 20);
 				}
 			}
 		}));
 	};
 
-	window.thumbnailRemover = new MutationObserver(thumbnailRemoverCallback);
-	const youtubeRootNode = document.querySelector("ytd-app, ytm-app");
-	console.log(youtubeRootNode);
-	window.thumbnailRemover.observe(youtubeRootNode, { subtree: true, childList: true });
+	setTimeout(
+		() =>
+		{
+			window.thumbnailRemover = new MutationObserver(thumbnailRemoverCallback);
+
+			const setupObserver = () =>
+			{
+				const youtubeRootNode = document.querySelector("ytd-app, ytm-app");
+				if(!youtubeRootNode)
+				{
+					setTimeout(setupObserver, 100);
+					return;
+				}
+				console.log("YouTube root:", youtubeRootNode);
+				window.thumbnailRemover.observe(youtubeRootNode, { subtree: true, childList: true });
+			};
+
+			setupObserver();
+		},
+		100
+	);
 };

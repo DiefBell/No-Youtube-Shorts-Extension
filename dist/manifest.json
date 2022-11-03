@@ -13,6 +13,7 @@
         "service_worker": "js/background.js"
     },
     "permissions": [
+		// https://developer.chrome.com/docs/extensions/reference/storage/
         "storage",
         "tabs",
 		"activeTab",
