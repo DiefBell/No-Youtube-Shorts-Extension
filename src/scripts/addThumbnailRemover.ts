@@ -16,7 +16,7 @@ export const addThumbnailRemover = () =>
 
 	const thumbnailRemoverCallback = (mutations : MutationRecord[]) =>
 	{
-		const nodeIsElement = (node : Node) : node is Element => !!(node as Element).matches;
+		const nodeIsElement = (node : Node) : node is Element => !!(node as Element).tagName;
 
 		const addedNodes = mutations
 			.filter((m) => m.type === "childList")
@@ -25,7 +25,6 @@ export const addThumbnailRemover = () =>
 
 		addedNodes.forEach((nodes) => nodes.forEach((node) =>
 		{
-			// console.log((node as any).tagName);
 			if(nodeIsElement(node))
 			{
 				const isShortsOverlay = node.tagName === "YTD-THUMBNAIL-OVERLAY-TIME-STATUS-RENDERER"
@@ -33,14 +32,11 @@ export const addThumbnailRemover = () =>
 
 				if(isShortsOverlay)
 				{
-					console.log("Video renderer");
-
 					const thumbnail = nthParent(node, 5);
-					console.log(thumbnail);
 
 					const removeThumbnail = () =>
 					{
-						node.remove();
+						thumbnail.remove();
 					};
 
 					// need to ensure that the item is RENDERED, as well as its DOM node existing
@@ -63,7 +59,6 @@ export const addThumbnailRemover = () =>
 					setTimeout(setupObserver, 100);
 					return;
 				}
-				console.log("YouTube root:", youtubeRootNode);
 				window.thumbnailRemover.observe(youtubeRootNode, { subtree: true, childList: true });
 			};
 
