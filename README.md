@@ -18,6 +18,7 @@
 - Fix issue where nav button isn't always removed.
 - Add some unit and integration tests.
 - Revamp Chrome storage hooks.
+- Hide thumbnails/nav button instead of delete, so they can be added back.
 - Husky.
 	- Circ deps checks (pre-commit).
 	- Audit (pre-push).
