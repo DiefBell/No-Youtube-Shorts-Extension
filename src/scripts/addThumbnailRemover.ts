@@ -34,13 +34,19 @@ export const addThumbnailRemover = () =>
 				{
 					const thumbnail = nthParent(node, 5);
 
+					// const removeThumbnail = () =>
+					// {
+					// 	thumbnail.parentNode.removeChild(thumbnail);
+					// };
+
 					const removeThumbnail = () =>
 					{
-						thumbnail.remove();
+						thumbnail.setAttribute("style", "background: linear-gradient(to top, #3204fdba, #9907facc) no-repeat top center;");
+						console.log("Adding white border to", thumbnail);
 					};
 
 					// need to ensure that the item is RENDERED, as well as its DOM node existing
-					setTimeout(removeThumbnail, 20);
+					setTimeout(removeThumbnail, 100);
 				}
 			}
 		}));
