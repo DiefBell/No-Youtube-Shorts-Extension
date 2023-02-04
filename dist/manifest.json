@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "No YouTube Shorts",
     "description": "Hides YouTube Shorts and redirects you to the home page if you open a shorts video",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "icons": {
         "16": "/icon/no-yt-shorts-16.png",
         "32": "/icon/no-yt-shorts-32.png",
@@ -13,6 +13,7 @@
         "service_worker": "js/background.js"
     },
     "permissions": [
+		// https://developer.chrome.com/docs/extensions/reference/storage/
         "storage",
         "tabs",
 		"activeTab",

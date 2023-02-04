@@ -7,4 +7,5 @@ export interface INysSettings
 	redirectFromShorts : boolean;
 	redirectPage : YoutubePage,
 	disabledUntil : Date | null,
+	debugging : boolean;
 }

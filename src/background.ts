@@ -10,7 +10,7 @@ import { addNavButtonRemover } from "./scripts/addNavButtonRemover";
 const messageHandler = (
 	request : MessagePayload,
 	sender : chrome.runtime.MessageSender,
-	sendResponse : (response ?: any) => void
+	sendResponse : (response ?: unknown) => void
 ) : boolean =>
 {
 	const isResponseAsync = false;
@@ -18,14 +18,21 @@ const messageHandler = (
 	switch(request.type)
 	{
 	case "LOG":
-		if(request.args) console.log(`No Youtube Shorts: ${request.msg}`, request.args); // eslint-disable-line no-console
-		else console.log(`No YouTube Shorts: ${request.msg}`); // eslint-disable-line no-console
+		if(request.args) console.log(`No Youtube Shorts: ${request.msg}`, request.args);
+		else console.log(`No YouTube Shorts: ${request.msg}`);
 		break;
 	default:
 		break;
 	}
 
-	sendResponse();
+	try
+	{
+		sendResponse();
+	}
+	catch (err)
+	{
+		console.error(err);
+	}
 	return isResponseAsync;
 };
 chrome.runtime.onMessage.addListener(messageHandler);
@@ -47,30 +54,35 @@ const tabChangeHandler = async (
 	const youtubeDomain = youtubeDomains.find((ytDomain) => tab.url?.includes(ytDomain));
 	if(!youtubeDomain) return;
 
+	const storedValues = await getChromeValues([
+		"hideNavigation",
+		"hideThumbnails",
+		"redirectFromShorts",
+		"redirectPage",
+		"disabledUntil",
+		"debugging"
+	]);
+
 	const {
 		hideNavigation,
 		hideThumbnails,
 		redirectFromShorts,
 		redirectPage,
 		disabledUntil: disabledUntilJson,
-	} = await getChromeValues([
-		"hideNavigation",
-		"hideThumbnails",
-		"redirectFromShorts",
-		"redirectPage",
-		"disabledUntil"
-	]);
+		debugging,
+	} = storedValues;
+
 
 	// cast disabledUntil from JSON to Date object
-	let disabledUntil = disabledUntilJson !== null ? new Date(disabledUntilJson) : null;
-	if(disabledUntil !== null)
+	let disabledUntil = disabledUntilJson !== undefined && new Date(disabledUntilJson);
+	if(disabledUntil !== undefined)
 	{
 		// check whether the disabledUntil time has passed
 		if(new Date() > disabledUntil)
 		{
 			// reset if passed
-			setChromeValues({ disabledUntil: null });
-			disabledUntil = null;
+			setChromeValues({ disabledUntil: undefined });
+			disabledUntil = undefined;
 		}
 		else
 		{
@@ -83,7 +95,6 @@ const tabChangeHandler = async (
 	{
 		if(tab.url.includes(`${youtubeDomain}${youtubePageSettings.shorts.url}`))
 		{
-			console.log("Redirecting!!!");
 			const redirectUrl = redirectPage !== undefined
 				? youtubePageSettings[redirectPage].url
 				: youtubePageSettings.home.url;
@@ -97,7 +108,8 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: addThumbnailRemover
+			func: addThumbnailRemover,
+			args: [ debugging ]
 		});
 	}
 

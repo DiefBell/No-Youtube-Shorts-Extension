@@ -8,7 +8,7 @@ const queryClient = new QueryClient();
 chrome.tabs.query({ active: true, currentWindow: true }, (tab) =>
 {
 	ReactDOM.render(
-		<QueryClientProvider client={queryClient}>
+		<QueryClientProvider client={ queryClient }>
 			<Popup />
 		</QueryClientProvider>,
 		document.getElementById("popup")

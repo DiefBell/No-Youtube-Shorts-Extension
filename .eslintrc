@@ -1,89 +1,131 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "project": "./tsconfig.json"
-    },
-    "plugins":
-    [
-      "@typescript-eslint"
-    ],
-    "extends":
-    [
-      "airbnb",
-      "airbnb-typescript",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "ignorePatterns": [ "*.css" ],
-    "rules":
-    {
-      // I like to be able to use if occassionally for lazy debugging
-      "no-console": "warn",
-
-      // base rule needs to be off for the TS rule to work
-      "brace-style": "off",
-      // Dief's personal preference
-      "@typescript-eslint/brace-style": [ "error", "allman", { "allowSingleLine": true } ],
-    
-      // base rule needs to be off for the TS rule to work
-      "semi": "off",
-      "@typescript-eslint/semi": [ "error" ],
-
-      "no-multiple-empty-lines": [ "error", { "max": 3 } ],
-
-      // Dief's personal preference
-      "@typescript-eslint/type-annotation-spacing": [
-        "error",
-        {
-          "before": true,
-          "after": true
-        }
-      ],
-        "max-len": [ "warn", 140 ],
-
-        "quotes": "off",
-        "@typescript-eslint/quotes": [ "error", "double" ],
-
-        "keyword-spacing": [ "off" ],
-        "@typescript-eslint/keyword-spacing": [ "off" ],
-
-        "no-tabs": "off",
-        "indent": "off",
-        "@typescript-eslint/indent": [ "error", "tab", {
-          "ignoredNodes": [
-            "TSTypeParameterInstantiation" // ignore types in generic function declarations
-          ]
-        } ],
-        "react/jsx-indent": [ "error", "tab" ],
-        "react/jsx-indent-props": [ "error", "tab" ],
-
-        "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": [ "off" ]
-,
-      // not really sure why this is a default rule for AirBnB
-      // so gonna do a bitta research
-      "import/prefer-default-export": "off",
-
-      "react/function-component-definition": [ "error", { "namedComponents": "function-declaration",  "unnamedComponents": "arrow-function"  }],
-      "array-bracket-spacing": [ "error", "always" ],
-
-	  "no-useless-return": "off"
-    },
-    "settings": {
-      "import/parsers": {
-        // this makes sure that import/extensions doesn't get confused
-        "@typescript-eslint/parser": [".ts", ".tsx"]
-      },
-      "import/resolver": {
-        // this makes sure that ESLint's path resolver is able
-        // to find the baseUrl and paths set in our tsconfig file
-        "typescript": {
-          // always try to resolve types under `<root>@types` directory
-          // even it doesn't contain any source code, like `@types/unist`
-          "alwaysTryTypes": true,
-          "project": "./tsconfig.json"
-        }
-      }
-  }
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"project": "./tsconfig.json"
+	},
+	"plugins": [
+		"@typescript-eslint"
+	],
+	"extends": [
+		"airbnb",
+		"airbnb-typescript",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	],
+	"ignorePatterns": [
+		"*.css"
+	],
+	"rules": {
+		"react/jsx-curly-spacing": [
+			"error",
+			{ "when": "always", "allowMultiline": true }
+		],
+		"eol-last": "error",
+		"implicit-arrow-linebreak": "off",
+		"no-plusplus": "off",
+		"no-console": "off",
+		// base rule needs to be off for the TS rule to work
+		"brace-style": "off",
+		// Dief's personal preference
+		"@typescript-eslint/brace-style": [
+			"error",
+			"allman",
+			{
+				"allowSingleLine": true
+			}
+		],
+		// base rule needs to be off for the TS rule to work
+		"semi": "off",
+		"@typescript-eslint/semi": [
+			"error"
+		],
+		"no-multiple-empty-lines": [
+			"error",
+			{
+				"max": 3
+			}
+		],
+		// Dief's personal preference
+		"@typescript-eslint/type-annotation-spacing": [
+			"error",
+			{
+				"before": true,
+				"after": true
+			}
+		],
+		"max-len": [
+			"warn",
+			140
+		],
+		"quotes": "off",
+		"@typescript-eslint/quotes": [
+			"error",
+			"double"
+		],
+		"keyword-spacing": [
+			"off"
+		],
+		"@typescript-eslint/keyword-spacing": [
+			"off"
+		],
+		"no-tabs": "off",
+		"indent": "off",
+		"@typescript-eslint/indent": [
+			"error",
+			"tab",
+			{
+				"ignoredNodes": [
+					"TSTypeParameterInstantiation" // ignore types in generic function declarations
+				]
+			}
+		],
+		"react/jsx-indent": [
+			"error",
+			"tab"
+		],
+		"react/jsx-indent-props": [
+			"error",
+			"tab"
+		],
+		"comma-dangle": "off",
+		"@typescript-eslint/comma-dangle": [
+			"off"
+		],
+		// not really sure why this is a default rule for AirBnB
+		// so gonna do a bitta research
+		"import/prefer-default-export": "off",
+		"react/function-component-definition": [
+			"error",
+			{
+				"namedComponents": "function-declaration",
+				"unnamedComponents": "arrow-function"
+			}
+		],
+		"array-bracket-spacing": [
+			"error",
+			"always"
+		],
+		"no-useless-return": "off",
+		"no-underscore-dangle": "off"
+	},
+	"settings": {
+		"import/parsers": {
+			// this makes sure that import/extensions doesn't get confused
+			"@typescript-eslint/parser": [
+				".ts",
+				".tsx"
+			]
+		},
+		"import/resolver": {
+			// this makes sure that ESLint's path resolver is able
+			// to find the baseUrl and paths set in our tsconfig file
+			"typescript": {
+				// always try to resolve types under `<root>@types` directory
+				// even it doesn't contain any source code, like `@types/unist`
+				"alwaysTryTypes": true,
+				"project": "./tsconfig.json"
+			}
+		}
+	}
 }
