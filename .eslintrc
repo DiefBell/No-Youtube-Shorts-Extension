@@ -17,6 +17,10 @@
 		"*.css"
 	],
 	"rules": {
+		"react/jsx-curly-spacing": [
+			"error",
+			{ "when": "always", "allowMultiline": true }
+		],
 		"eol-last": "error",
 		"implicit-arrow-linebreak": "off",
 		"no-plusplus": "off",
@@ -102,7 +106,8 @@
 			"error",
 			"always"
 		],
-		"no-useless-return": "off"
+		"no-useless-return": "off",
+		"no-underscore-dangle": "off"
 	},
 	"settings": {
 		"import/parsers": {

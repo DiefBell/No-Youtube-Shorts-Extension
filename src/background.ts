@@ -59,7 +59,8 @@ const tabChangeHandler = async (
 		"hideThumbnails",
 		"redirectFromShorts",
 		"redirectPage",
-		"disabledUntil"
+		"disabledUntil",
+		"debugging"
 	]);
 
 	const {
@@ -68,6 +69,7 @@ const tabChangeHandler = async (
 		redirectFromShorts,
 		redirectPage,
 		disabledUntil: disabledUntilJson,
+		debugging,
 	} = storedValues;
 
 
@@ -106,7 +108,8 @@ const tabChangeHandler = async (
 	{
 		await chrome.scripting.executeScript({
 			target: { tabId },
-			func: addThumbnailRemover
+			func: addThumbnailRemover,
+			args: [ debugging ]
 		});
 	}
 

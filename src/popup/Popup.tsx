@@ -2,11 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons";
 import React, { useEffect } from "react";
 import { YoutubePages } from "../constants/YoutubePages";
-import { log } from "../helpers/log";
+// import { log } from "../helpers/log";
 import { useChromeState } from "../hooks/useChromeState";
 import { YoutubePage } from "../types/YoutubePage";
 import "./Popup.scss";
-
+import { PRODUCTION } from "../constants/production";
 
 
 export default function Popup()
@@ -36,16 +36,21 @@ export default function Popup()
 		}
 	);
 
-	const deleteAll = () =>
-	{
-		chrome.storage.sync.remove([
-			"nys:disableUntil",
-			"nys:hideNavigation",
-			"nys:hideThumbnails",
-			"nys:redirectFromShorts",
-			"nyt:disableUntil",
-		]);
-	};
+	const [ debugging, setDebugging ] = useChromeState(
+		"debugging",
+		false
+	);
+
+	// const deleteAll = () =>
+	// {
+	// 	chrome.storage.sync.remove([
+	// 		"nys:disableUntil",
+	// 		"nys:hideNavigation",
+	// 		"nys:hideThumbnails",
+	// 		"nys:redirectFromShorts",
+	// 		"nyt:disableUntil",
+	// 	]);
+	// };
 	// uncomment to delete from Chrome sync storage
 	// useEffect(deleteAll, []);
 
@@ -62,58 +67,58 @@ export default function Popup()
 	return (
 		<div className="popupContainer">
 			<h3>Settings:</h3>
-			<hr style={{
+			<hr style={ {
 				width: "90%", backgroundColor: "red", marginTop: "0", marginBottom: "4px", padding: "0", height: "3px", border: "none"
-			}}
+			} }
 			/>
 			<div className="two-columns">
 				<div className="button-container button-container-left">
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className={hideNavigation ? "show-hide-button" : "show-hide-button__off"}
-						disabled={!!disabledUntil}
+						className={ hideNavigation ? "show-hide-button" : "show-hide-button__off" }
+						disabled={ !!disabledUntil }
 						type="button"
-						style={{
+						style={ {
 							backgroundColor: hideNavigation ? "red" : "#C7D0D8",
 							color: hideNavigation ? "white" : "black",
-						}}
-						onClick={async () =>
+						} }
+						onClick={ async () =>
 						{
 							await setHideNavigation(!hideNavigation);
-						}}
+						} }
 					>
 						{hideNavigation ? "Navigation blocked" : "Navigation on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className={hideThumbnails ? "show-hide-button" : "show-hide-button__off"}
-						disabled={!!disabledUntil}
+						className={ hideThumbnails ? "show-hide-button" : "show-hide-button__off" }
+						disabled={ !!disabledUntil }
 						type="button"
-						style={{
+						style={ {
 							backgroundColor: hideThumbnails ? "red" : "#C7D0D8",
 							color: hideThumbnails ? "white" : "black",
-						}}
-						onClick={async () =>
+						} }
+						onClick={ async () =>
 						{
 							await setHideThumbnails(!hideThumbnails);
-						}}
+						} }
 					>
 						{hideThumbnails ? "Thumbnails blocked" : "Thumbnails on"}
 					</button>
 
 					<button // we should create a new component for this button maybe? And move the states into it?
-						className={redirectFromShorts ? "show-hide-button" : "show-hide-button__off"}
-						disabled={!!disabledUntil}
+						className={ redirectFromShorts ? "show-hide-button" : "show-hide-button__off" }
+						disabled={ !!disabledUntil }
 						type="button"
-						style={{
+						style={ {
 							backgroundColor: redirectFromShorts
 								? "red"
 								: "#C7D0D8",
 							color: redirectFromShorts ? "white" : "black",
-						}}
-						onClick={async () =>
+						} }
+						onClick={ async () =>
 						{
 							await setRedirectFromShorts(!redirectFromShorts);
-						}}
+						} }
 					>
 						{redirectFromShorts
 							? "You'll be redirected to:"
@@ -121,18 +126,18 @@ export default function Popup()
 					</button>
 
 					<select
-						className={redirectFromShorts ? "redirection-menu" : "redirection-menu__off"}
-						disabled={!!disabledUntil}
+						className={ redirectFromShorts ? "redirection-menu" : "redirection-menu__off" }
+						disabled={ !!disabledUntil }
 						name="redirectPage"
-						onChange={(option) =>
+						onChange={ (option) =>
 						{
 							setRedirectPage(option.target.value as YoutubePage);
-						}}
-						value={redirectPage}
+						} }
+						value={ redirectPage }
 					>
 						{YoutubePages.filter((page) => page !== "shorts").map(
 							(page) => (
-								<option key={page} value={page}>
+								<option key={ page } value={ page }>
 									{page}
 								</option>
 							)
@@ -145,10 +150,10 @@ export default function Popup()
 							<button
 								className="show-hide-button-2 enable-disable-extension"
 								type="button"
-								onClick={() => setDisabledUntil(null)}
+								onClick={ () => setDisabledUntil(null) }
 							>
 
-								<FontAwesomeIcon icon={faPowerOff} />
+								<FontAwesomeIcon icon={ faPowerOff } />
 
 								<span className="smaller-text">Turn on</span>
 							</button>
@@ -162,15 +167,15 @@ export default function Popup()
 							<button
 								className="enable-disable-extension "
 								type="button"
-								onClick={() =>
+								onClick={ () =>
 								{
 									const date = new Date();
 									date.setHours(date.getHours() + 1);
 									setDisabledUntil(date);
-								}}
+								} }
 							>
 								<span className="off-icon">
-									<FontAwesomeIcon icon={faPowerOff} />
+									<FontAwesomeIcon icon={ faPowerOff } />
 								</span>
 								<br />
 								<span className="smaller-text">Turn off</span>
@@ -188,6 +193,20 @@ export default function Popup()
 					</h4>
 				) : ("")}
 			</div>
+
+			{ !PRODUCTION && (
+				<div>
+					<label htmlFor="debugging-checkbox">
+						Enable debug mode
+						<input
+							id="debugging"
+							type="checkbox"
+							checked={ debugging }
+							onChange={ () => setDebugging(!debugging) }
+						/>
+					</label>
+				</div>
+			)}
 		</div>
 	);
 
